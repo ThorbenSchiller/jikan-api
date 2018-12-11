@@ -1,0 +1,19 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "interface-name": [
+      true,
+      "never-prefix"
+    ],
+    "arrow-parens": [
+      true,
+      "ban-single-arg-parens"
+    ],
+    "member-ordering": [
+      true,
+      {
+        "order": "fields-first"
+      }
+    ]
+  }
+}

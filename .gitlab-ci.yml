@@ -1,0 +1,39 @@
+image: node:8
+
+cache:
+  paths:
+    - node_modules/
+    - dist/
+
+stages:
+  - test
+  - build
+  - publish
+
+before_script:
+  - npm install
+
+test:
+  stage: test
+  script:
+    - npm run lint
+    - npm run test:coverage
+  coverage:
+    '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+
+build:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
+publish:
+  stage: publish
+  only:
+    - tags
+  script:
+    - echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > .npmrc
+    - npm publish
