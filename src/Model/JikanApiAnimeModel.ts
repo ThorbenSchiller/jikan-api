@@ -17,7 +17,7 @@ export interface JikanApiAnimeModel extends JikanCacheInformation {
     airing: boolean;
     aired: JikanApiAiredModel | null;
     duration: string | null;
-    rating: string;
+    rating: string | null;
     score: number;
     scored_by: number;
     rank: number;
