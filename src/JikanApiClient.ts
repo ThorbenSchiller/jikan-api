@@ -1,7 +1,5 @@
 import {Fetcher} from "@thorbens/fetcher";
-import {InjectLogger} from "@thorbens/logging";
 import {Inject} from "typescript-ioc";
-import {Logger} from "winston";
 import {JikanApiAnimeModel} from "./Model/JikanApiAnimeModel";
 import {JikanApiEpisodeModel, JikanApiEpisodesResponse} from "./Model/JikanApiEpisodeModel";
 import {isErrorResponse, JikanApiError, JikanApiType} from "./Model/JikanApiModel";
@@ -19,11 +17,6 @@ export class JikanApiClient {
      */
     @Inject
     private fetcher!: Fetcher;
-    /**
-     * The logger for this class.
-     */
-    @InjectLogger()
-    private logger!: Logger;
     /**
      * Endpoint url (without tailing slash)
      */
@@ -47,7 +40,6 @@ export class JikanApiClient {
      */
     public async getDetail(id: number): Promise<JikanApiAnimeModel> {
         const url = `${this.endpointUrl}/anime/${id}`;
-        this.logger.debug(`performing request to ${url}`);
         const response = await this.fetcher.fetch(url);
         const responseObject = response.asJSON<JikanApiError | JikanApiAnimeModel>();
         if (isErrorResponse(responseObject)) {
@@ -67,7 +59,6 @@ export class JikanApiClient {
      */
     public async getEpisodes(id: number, page: number = 1): Promise<JikanApiEpisodesResponse> {
         const url = `${this.endpointUrl}/anime/${id}/episodes/${page}`;
-        this.logger.debug(`performing request to ${url}`);
         const response = await this.fetcher.fetch(url);
         const responseObject = response.asJSON<JikanApiError | JikanApiEpisodesResponse>();
         if (isErrorResponse(responseObject)) {
@@ -108,7 +99,6 @@ export class JikanApiClient {
      */
     public async getSeason(year: number, season: JikanSeasonType): Promise<JikanApiSeasonModel> {
         const url = `${this.endpointUrl}/season/${year}/${season}`;
-        this.logger.debug(`performing request to ${url}`);
 
         const response = await this.fetcher.fetch(url);
         const responseObject = response.asJSON<JikanApiError | JikanApiSeasonModel>();
@@ -136,7 +126,6 @@ export class JikanApiClient {
             .join("&");
         // create final url
         const url = `${this.endpointUrl}/search/${type}?q=${query}&${queryString}`;
-        this.logger.debug(`performing request to ${url}`);
         // fetch response from api
         const response = await this.fetcher.fetch(url);
         const responseObject = response.asJSON<JikanApiError | JikanApiSearchModel>();

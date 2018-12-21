@@ -1,4 +1,5 @@
 import {JikanApiAiredModel} from "./JikanApiAiredModel";
+import {JikanApiAiringStatus} from "./JikanApiAiringStatus";
 import {JikanApiType, JikanCacheInformation, JikanDetailedType} from "./JikanApiModel";
 
 export interface JikanApiAnimeModel extends JikanCacheInformation {
@@ -13,7 +14,7 @@ export interface JikanApiAnimeModel extends JikanCacheInformation {
     type: JikanDetailedType;
     source: string;
     episodes: number | null;
-    status: string;
+    status: JikanApiAiringStatus;
     airing: boolean;
     aired: JikanApiAiredModel | null;
     duration: string | null;

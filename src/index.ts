@@ -1,5 +1,6 @@
 export * from "./JikanApiClient";
 export * from "./Model/JikanApiAiredModel";
+export * from "./Model/JikanApiAiringStatus";
 export * from "./Model/JikanApiAnimeModel";
 export * from "./Model/JikanApiEpisodeModel";
 export * from "./Model/JikanApiModel";

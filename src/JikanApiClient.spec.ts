@@ -1,6 +1,5 @@
 import {Fetcher} from "@thorbens/fetcher";
 import {DefaultResponseFactory, NodeFetchFetcher, ResponseFactory} from "@thorbens/fetcher/dist";
-import {expect} from "chai";
 import {Container, Scope} from "typescript-ioc";
 import {JikanApiClient} from "./JikanApiClient";
 import {JikanApiType} from "./Model/JikanApiModel";
@@ -16,22 +15,22 @@ describe("JikanApiClient", () => {
         const apiClient = new JikanApiClient();
         const response = await apiClient.getDetail(1);
 
-        expect(!!response).to.be.equal(true);
+        expect(!!response).toEqual(true);
 
-        expect(response.mal_id).to.be.equal(1);
-        expect(response.url).to.be.equal(`https://myanimelist.net/anime/1/Cowboy_Bebop`);
-        expect(response.image_url).to.be.equal(`https://cdn.myanimelist.net/images/anime/4/19644.jpg`);
-        expect(response.trailer_url).to.be.equal(
+        expect(response.mal_id).toEqual(1);
+        expect(response.url).toEqual(`https://myanimelist.net/anime/1/Cowboy_Bebop`);
+        expect(response.image_url).toEqual(`https://cdn.myanimelist.net/images/anime/4/19644.jpg`);
+        expect(response.trailer_url).toEqual(
             `https://www.youtube.com/embed/qig4KOK2R2g?enablejsapi=1&wmode=opaque&autoplay=1`,
         );
-        expect(response.title).to.be.equal(`Cowboy Bebop`);
-        expect(response.title_english).to.be.equal(`Cowboy Bebop`);
-        expect(response.title_japanese).to.be.equal(`カウボーイビバップ`);
-        expect(response.type).to.be.equal(`TV`);
-        expect(response.source).to.be.equal(`Original`);
-        expect(response.episodes).to.be.equal(26);
-        expect(response.status).to.be.equal(`Finished Airing`);
-        expect(response.airing).to.be.equal(false);
+        expect(response.title).toEqual(`Cowboy Bebop`);
+        expect(response.title_english).toEqual(`Cowboy Bebop`);
+        expect(response.title_japanese).toEqual(`カウボーイビバップ`);
+        expect(response.type).toEqual(`TV`);
+        expect(response.source).toEqual(`Original`);
+        expect(response.episodes).toEqual(26);
+        expect(response.status).toEqual(`Finished Airing`);
+        expect(response.airing).toEqual(false);
     });
 
     it("should perform a search request", async () => {
@@ -39,6 +38,6 @@ describe("JikanApiClient", () => {
         const searchTerm = `attack on titan`;
         const response = await apiClient.search(searchTerm, JikanApiType.ANIME);
 
-        expect(!!response).to.be.equal(true);
+        expect(!!response).toEqual(true);
     });
 });
