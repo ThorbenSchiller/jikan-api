@@ -5,7 +5,6 @@ import {JikanApiClient} from "./JikanApiClient";
 import {JikanApiType} from "./Model/JikanApiModel";
 
 describe("JikanApiClient", () => {
-
     beforeAll(() => {
         Container.bind(Fetcher).to(NodeFetchFetcher).scope(Scope.Singleton);
         Container.bind(ResponseFactory).to(DefaultResponseFactory).scope(Scope.Singleton);

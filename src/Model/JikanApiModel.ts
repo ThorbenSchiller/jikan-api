@@ -20,16 +20,41 @@ export enum JikanDetailedType {
     MANHUA = "manhua",
 }
 
+/**
+ * An api error.
+ */
 export interface JikanApiError {
+    /**
+     * The error message.
+     */
     error: string;
 }
 
-export const isErrorResponse = (response: object): response is JikanApiError => {
+/**
+ * Checks if the given response object is an error response.
+ *
+ * @param response The response object to check.
+ */
+export function isErrorResponse(response: object): response is JikanApiError {
     return response && `error` in response;
-};
+}
 
+/**
+ * Interface for cache information in an api response.
+ */
 export interface JikanCacheInformation {
+    /**
+     * The request hash.
+     *
+     * @example request:anime:c8a5be55579a0147b5c455245461fe69a7347e1b
+     */
     request_hash: string;
+    /**
+     * Indicator if the requests was cached.
+     */
     request_cached: boolean;
+    /**
+     * Expire timestamp for the cache.
+     */
     request_cache_expiry: number;
 }

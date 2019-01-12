@@ -9,7 +9,7 @@ import {JikanApiSeasonModel, JikanSeasonType} from "./Model/JikanApiSeasonModel"
 /**
  * Implementation of a Http Client for the Jikan MyAnimeList Api.
  *
- * @see https://jikan.docs.apiary.io/
+ * @see {@link https://jikan.docs.apiary.io/}
  */
 export class JikanApiClient {
     /**
@@ -18,7 +18,7 @@ export class JikanApiClient {
     @Inject
     private fetcher!: Fetcher;
     /**
-     * Endpoint url (without tailing slash)
+     * Endpoint url (without tailing slash).
      */
     private readonly endpointUrl: string;
 
@@ -29,43 +29,39 @@ export class JikanApiClient {
      * @param endpointUrl The endpoint url to use.
      */
     constructor(endpointUrl?: string) {
-        this.endpointUrl = endpointUrl || `https://api.jikan.moe/v3`;
+        this.endpointUrl = endpointUrl || this.getDefaultUrl();
     }
 
     /**
      * Fetches detail information about the given anime id.
+     * If an error occurred during the request or the id could not be found,
+     * the promise is rejected.
      *
      * @param id The anime id to fetch details for.
-     * @see https://jikan.docs.apiary.io/#reference/0/anime
+     * @returns The detail model for the requested id.
+     * @see {@link https://jikan.docs.apiary.io/#reference/0/anime}
      */
     public async getDetail(id: number): Promise<JikanApiAnimeModel> {
         const url = `${this.endpointUrl}/anime/${id}`;
-        const response = await this.fetcher.fetch(url);
-        const responseObject = response.asJSON<JikanApiError | JikanApiAnimeModel>();
-        if (isErrorResponse(responseObject)) {
-            throw new Error(responseObject.error);
-        }
-
-        return responseObject;
+        // fetch response from api
+        return this.performRequest<JikanApiAnimeModel>(url);
     }
 
     /**
      * Fetches episodes information for the given anime id.
      * Episodes are paged. To retrieve all episodes, use getAllEpisodes.
+     * If an error occurred during the request or the id could not be found,
+     * the promise is rejected.
      *
      * @param id The anime id to fetch details for.
      * @param page The page to retrieve.
-     * @see https://jikan.docs.apiary.io/#reference/0/anime
+     * @returns The episodes model for the requested id.
+     * @see {@link https://jikan.docs.apiary.io/#reference/0/anime}
      */
     public async getEpisodes(id: number, page: number = 1): Promise<JikanApiEpisodesResponse> {
         const url = `${this.endpointUrl}/anime/${id}/episodes/${page}`;
-        const response = await this.fetcher.fetch(url);
-        const responseObject = response.asJSON<JikanApiError | JikanApiEpisodesResponse>();
-        if (isErrorResponse(responseObject)) {
-            throw new Error(responseObject.error);
-        }
-
-        return responseObject;
+        // fetch response from api
+        return this.performRequest<JikanApiEpisodesResponse>(url);
     }
 
     /**
@@ -73,7 +69,8 @@ export class JikanApiClient {
      * Episodes are paged. To retrieve all episodes, use getAllEpisodes.
      *
      * @param id The anime id to fetch details for.
-     * @see https://jikan.docs.apiary.io/#reference/0/anime
+     * @returns The episode models for the requested id.
+     * @see {@link https://jikan.docs.apiary.io/#reference/0/anime}
      */
     public async getAllEpisodes(id: number): Promise<JikanApiEpisodeModel[]> {
         const episodes: JikanApiEpisodeModel[] = [];
@@ -92,30 +89,30 @@ export class JikanApiClient {
 
     /**
      * Retrieves animes of the specified season.
+     * If an error occurred during the request or the id could not be found,
+     * the promise is rejected.
      *
      * @param year Specify the year
      * @param season Specify the season
-     * @see https://jikan.docs.apiary.io/#reference/0/season
+     * @returns The season model for the requested id.
+     * @see {@link https://jikan.docs.apiary.io/#reference/0/season}
      */
     public async getSeason(year: number, season: JikanSeasonType): Promise<JikanApiSeasonModel> {
         const url = `${this.endpointUrl}/season/${year}/${season}`;
-
-        const response = await this.fetcher.fetch(url);
-        const responseObject = response.asJSON<JikanApiError | JikanApiSeasonModel>();
-        if (isErrorResponse(responseObject)) {
-            throw new Error(responseObject.error);
-        }
-
-        return responseObject;
+        // fetch response from api
+        return this.performRequest<JikanApiSeasonModel>(url);
     }
 
     /**
      * Performs a search request for the given query.
+     * If an error occurred during the request or the id could not be found,
+     * the promise is rejected.
      *
      * @param query For UTF8 characters, percentage encoded and queries including back slashes
-     * @param type Specify where to search
-     * @param options Further search options
-     * @see https://jikan.docs.apiary.io/#reference/0/search/search-request-example+schema?console=1
+     * @param type Specify where to search.
+     * @param options Further search options.
+     * @returns The search model for the given query.
+     * @see {@link https://jikan.docs.apiary.io/#reference/0/search/search-request-example+schema?console=1}
      */
     public async search(query: string, type: JikanApiType,
                         options: JikanSearchOptions = {}): Promise<JikanApiSearchModel> {
@@ -127,10 +124,31 @@ export class JikanApiClient {
         // create final url
         const url = `${this.endpointUrl}/search/${type}?q=${query}&${queryString}`;
         // fetch response from api
+        return this.performRequest<JikanApiSearchModel>(url);
+    }
+
+    /**
+     * Returns the default api url to use of no url is given in the constructor.
+     * Overwrite this function in an extended class to change the used default url.
+     *
+     * @returns The default api url to use of no url is given in the constructor.
+     */
+    protected getDefaultUrl(): string {
+        return `https://api.jikan.moe/v3`;
+    }
+
+    /**
+     * Fetches the given api url and returns the type T.
+     * If the response is an error, the promise is rejected.
+     *
+     * @param url The url to fetch.
+     * @returns The typed response from the request.
+     */
+    private async performRequest<T extends object>(url: string): Promise<T> {
         const response = await this.fetcher.fetch(url);
-        const responseObject = response.asJSON<JikanApiError | JikanApiSearchModel>();
+        const responseObject = response.asJSON<JikanApiError | T>();
         if (isErrorResponse(responseObject)) {
-            throw new Error(responseObject.error);
+            return Promise.reject(new Error(responseObject.error));
         }
 
         return responseObject;

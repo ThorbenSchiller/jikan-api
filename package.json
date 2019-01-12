@@ -10,7 +10,8 @@
     "clean": "rimraf dist",
     "lint": "tslint 'src/**/*.ts'",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "docs": "typedoc --out ./doc/ --mode file --excludePrivate --theme minimal"
   },
   "author": "Thorben Schiller <schillerthorben@gmail.com>",
   "license": "ISC",
@@ -29,15 +30,16 @@
     "@thorbens/fetcher": "^1.0.1"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.10",
     "@types/node": "^10.12.12",
     "@types/whatwg-mimetype": "^2.1.0",
-    "@types/jest": "^23.3.10",
-    "rimraf": "^2.6.2",
-    "tslint": "^5.11.0",
-    "typescript": "^3.2.2",
     "jest": "^23.6.0",
+    "node-fetch": "^2.3.0",
+    "rimraf": "^2.6.2",
     "ts-jest": "^23.10.5",
-    "typescript-ioc": "^1.2.4",
-    "node-fetch": "^2.3.0"
+    "tslint": "^5.11.0",
+    "typedoc": "^0.14.1",
+    "typescript": "^3.2.2",
+    "typescript-ioc": "^1.2.4"
   }
 }

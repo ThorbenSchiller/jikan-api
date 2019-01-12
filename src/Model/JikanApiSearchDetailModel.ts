@@ -1,7 +1,9 @@
 import {JikanCacheInformation, JikanDetailedType} from "./JikanApiModel";
 
 /**
- * @see https://jikan.docs.apiary.io/#reference/0/search/search-request-example+schema?console=1
+ * Search options for a search request.
+ *
+ * @see {@link https://jikan.docs.apiary.io/#reference/0/search/search-request-example+schema?console=1}
  */
 export interface JikanSearchOptions {
     /**
@@ -22,11 +24,17 @@ export interface JikanSearchOptions {
     genre?: number;
 }
 
+/**
+ * Model for a search response.
+ */
 export interface JikanApiSearchModel extends JikanCacheInformation {
     results: JikanApiSearchDetailModel[];
     last_page: number;
 }
 
+/**
+ * Model for an anime inside a search response.
+ */
 interface JikanApiSearchDetailModel {
     mal_id: number;
     url: string;
