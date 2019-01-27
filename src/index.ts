@@ -6,3 +6,5 @@ export * from "./Model/JikanApiEpisodeModel";
 export * from "./Model/JikanApiModel";
 export * from "./Model/JikanApiSearchDetailModel";
 export * from "./Model/JikanApiSeasonModel";
+export * from "./Model/JikanApiRecommendationModel";
+export * from "./Model/JikanApiReviewModel";
