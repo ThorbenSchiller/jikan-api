@@ -3,6 +3,8 @@ import {Inject} from "typescript-ioc";
 import {JikanApiAnimeModel} from "./Model/JikanApiAnimeModel";
 import {JikanApiEpisodeModel, JikanApiEpisodesResponse} from "./Model/JikanApiEpisodeModel";
 import {isErrorResponse, JikanApiError, JikanApiType} from "./Model/JikanApiModel";
+import {JikanApiRecommendationsResponse} from "./Model/JikanApiRecommendationModel";
+import {JikanApiReviewsResponse} from "./Model/JikanApiReviewModel";
 import {JikanApiSearchModel, JikanSearchOptions} from "./Model/JikanApiSearchDetailModel";
 import {JikanApiSeasonModel, JikanSeasonType} from "./Model/JikanApiSeasonModel";
 
@@ -49,7 +51,7 @@ export class JikanApiClient {
 
     /**
      * Fetches episodes information for the given anime id.
-     * Episodes are paged. To retrieve all episodes, use getAllEpisodes.
+     * Episodes are paged. To retrieve all episodes, use {@link getAllEpisodes}.
      * If an error occurred during the request or the id could not be found,
      * the promise is rejected.
      *
@@ -85,6 +87,36 @@ export class JikanApiClient {
         }
 
         return episodes;
+    }
+
+    /**
+     * Returns reviews for the given anime id.
+     * Reviews are paged.
+     * If an error occurred during the request or the id could not be found,
+     * the promise is rejected.
+     *
+     * @param id The anime id to fetch reviews for.
+     * @param page The page to retrieve.
+     * @returns The reviews model for the requested id.
+     * @see {@link https://jikan.docs.apiary.io/#reference/0/anime}
+     */
+    public async getReviews(id: number, page: number = 1): Promise<JikanApiReviewsResponse> {
+        const url = `${this.endpointUrl}/anime/${id}/reviews/${page}`;
+        // fetch response from api
+        return this.performRequest<JikanApiReviewsResponse>(url);
+    }
+
+    /**
+     * Returns all recommendations for the given anime id.
+     *
+     * @param id The anime id to fetch recommendations for.
+     * @returns The recommendations model for the requested id.
+     * @see {@link https://jikan.docs.apiary.io/#reference/0/anime}
+     */
+    public async getRecommendations(id: number): Promise<JikanApiRecommendationsResponse> {
+        const url = `${this.endpointUrl}/anime/${id}/recommendations`;
+        // fetch response from api
+        return this.performRequest<JikanApiRecommendationsResponse>(url);
     }
 
     /**

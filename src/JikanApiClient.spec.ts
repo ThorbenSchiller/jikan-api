@@ -39,4 +39,20 @@ describe("JikanApiClient", () => {
 
         expect(!!response).toEqual(true);
     });
+
+    it("should perform a recommendation request", async () => {
+        const apiClient = new JikanApiClient();
+        const response = await apiClient.getRecommendations(1);
+
+        expect(!!response).toEqual(true);
+        expect(response.recommendations.length > 0).toEqual(true);
+    });
+
+    it("should perform a reviews request", async () => {
+        const apiClient = new JikanApiClient();
+        const response = await apiClient.getReviews(1);
+
+        expect(!!response).toEqual(true);
+        expect(response.reviews.length > 0).toEqual(true);
+    });
 });
