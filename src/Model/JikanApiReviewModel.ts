@@ -18,7 +18,7 @@ export interface JikanApiReviewModel {
     /**
      * The url to this review.
      */
-    url: number;
+    url: string;
     /**
      * The number of people who found this review helpful.
      */
