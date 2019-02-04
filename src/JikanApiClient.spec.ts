@@ -1,12 +1,14 @@
-import {Fetcher} from "@thorbens/fetcher";
-import {DefaultResponseFactory, NodeFetchFetcher, ResponseFactory} from "@thorbens/fetcher/dist";
+import {AxiosFetcher} from "@thorbens/fetcher/dist/AxiosFetcher";
+import {DefaultResponseFactory} from "@thorbens/fetcher/dist/DefaultResponseFactory";
+import {Fetcher} from "@thorbens/fetcher/dist/Fetcher";
+import {ResponseFactory} from "@thorbens/fetcher/dist/ResponseFactory";
 import {Container, Scope} from "typescript-ioc";
 import {JikanApiClient} from "./JikanApiClient";
 import {JikanApiType} from "./Model/JikanApiModel";
 
 describe("JikanApiClient", () => {
     beforeAll(() => {
-        Container.bind(Fetcher).to(NodeFetchFetcher).scope(Scope.Singleton);
+        Container.bind(Fetcher).to(AxiosFetcher).scope(Scope.Singleton);
         Container.bind(ResponseFactory).to(DefaultResponseFactory).scope(Scope.Singleton);
     });
 
@@ -18,7 +20,7 @@ describe("JikanApiClient", () => {
 
         expect(response.mal_id).toEqual(1);
         expect(response.url).toEqual(`https://myanimelist.net/anime/1/Cowboy_Bebop`);
-        expect(response.image_url).toEqual(`https://cdn.myanimelist.net/images/anime/4/19644.jpg`);
+        expect(response.image_url).toEqual(`https://myanimelist.cdn-dena.com/images/anime/4/19644.jpg`);
         expect(response.trailer_url).toEqual(
             `https://www.youtube.com/embed/qig4KOK2R2g?enablejsapi=1&wmode=opaque&autoplay=1`,
         );

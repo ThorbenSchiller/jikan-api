@@ -1,4 +1,4 @@
-import {Fetcher} from "@thorbens/fetcher";
+import {Fetcher} from "@thorbens/fetcher/dist/Fetcher";
 import {Inject} from "typescript-ioc";
 import {JikanApiAnimeModel} from "./Model/JikanApiAnimeModel";
 import {JikanApiEpisodeModel, JikanApiEpisodesResponse} from "./Model/JikanApiEpisodeModel";
