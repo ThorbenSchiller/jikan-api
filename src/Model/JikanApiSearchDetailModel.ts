@@ -1,4 +1,6 @@
+import {JikanApiAnimeGenre} from "./JikanApiAnimeGenre";
 import {JikanCacheInformation, JikanDetailedType} from "./JikanApiModel";
+import {JikanApiRating} from "./JikanApiRating";
 
 /**
  * Search options for a search request.
@@ -19,9 +21,25 @@ export interface JikanSearchOptions {
      */
     type?: JikanDetailedType;
     /**
-     * These values reflect the genre IDs of MyAnimeList.
+     * Filter genre of results.
      */
-    genre?: number;
+    genre?: JikanApiAnimeGenre;
+    /**
+     * Filter rating of results.
+     */
+    rated?: JikanApiRating;
+    /**
+     * Set to true, to exclude genres listed in {@link genre}.
+     */
+    genre_exclude?: boolean;
+    /**
+     * The ISO8601 start date used for filtering results.
+     */
+    start_date?: string;
+    /**
+     * The ISO8601 end date used for filtering results.
+     */
+    end_date?: string;
 }
 
 /**

@@ -4,6 +4,7 @@ import {Fetcher} from "@thorbens/fetcher/dist/Fetcher";
 import {ResponseFactory} from "@thorbens/fetcher/dist/ResponseFactory";
 import {Container, Scope} from "typescript-ioc";
 import {JikanApiClient} from "./JikanApiClient";
+import {JikanApiAiringStatus} from "./Model/JikanApiAiringStatus";
 import {JikanApiType} from "./Model/JikanApiModel";
 
 describe("JikanApiClient", () => {
@@ -30,8 +31,9 @@ describe("JikanApiClient", () => {
         expect(response.type).toEqual(`TV`);
         expect(response.source).toEqual(`Original`);
         expect(response.episodes).toEqual(26);
-        expect(response.status).toEqual(`Finished Airing`);
+        expect(response.status).toEqual(JikanApiAiringStatus.FINISHED_AIRING);
         expect(response.airing).toEqual(false);
+        expect(response.rating).toEqual(`R - 17+ (violence & profanity)`);
     });
 
     it("should perform a search request", async () => {
