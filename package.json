@@ -11,7 +11,7 @@
     "lint": "tslint 'src/**/*.ts'",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "docs": "typedoc --out ./doc/ --mode file --excludePrivate --theme minimal"
+    "docs": "rimraf doc && typedoc --out ./doc/ --mode file --excludePrivate --theme minimal"
   },
   "author": "Thorben Schiller <schillerthorben@gmail.com>",
   "license": "ISC",
@@ -27,7 +27,8 @@
     "typescript"
   ],
   "dependencies": {
-    "@thorbens/fetcher": "^2.1.0"
+    "@thorbens/fetcher": "^2.1.0",
+    "typescript-ioc": "^1.2.4"
   },
   "devDependencies": {
     "@types/jest": "^23.3.12",
@@ -39,7 +40,6 @@
     "ts-jest": "^23.10.5",
     "tslint": "^5.12.1",
     "typedoc": "^0.14.1",
-    "typescript": "^3.2.2",
-    "typescript-ioc": "^1.2.4"
+    "typescript": "^3.2.2"
   }
 }
