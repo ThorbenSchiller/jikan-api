@@ -8,7 +8,7 @@ cache:
 stages:
   - test
   - build
-  - publish
+  - deploy
 
 before_script:
   - npm install
@@ -31,7 +31,7 @@ build:
     expire_in: 1 week
 
 publish:
-  stage: publish
+  stage: deploy
   only:
     - tags
   script:
