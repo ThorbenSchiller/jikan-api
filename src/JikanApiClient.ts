@@ -17,8 +17,7 @@ export class JikanApiClient {
     /**
      * The fetcher used to perform http requests.
      */
-    @Inject
-    private fetcher!: Fetcher;
+    private readonly fetcher: Fetcher;
     /**
      * Endpoint url (without tailing slash).
      */
@@ -28,10 +27,12 @@ export class JikanApiClient {
      * Creates a new instance for this class.
      * No further methods are called in the constructor.
      *
+     * @param fetcher The fetcher used for requests.
      * @param endpointUrl The endpoint url to use.
      */
-    constructor(endpointUrl?: string) {
+    constructor(@Inject fetcher: Fetcher, endpointUrl?: string) {
         this.endpointUrl = endpointUrl || this.getDefaultUrl();
+        this.fetcher = fetcher;
     }
 
     /**
@@ -175,6 +176,7 @@ export class JikanApiClient {
      *
      * @param url The url to fetch.
      * @returns The typed response from the request.
+     * @typeparam T The expected response object.
      */
     private async performRequest<T extends object>(url: string): Promise<T> {
         const response = await this.fetcher.fetch(url);

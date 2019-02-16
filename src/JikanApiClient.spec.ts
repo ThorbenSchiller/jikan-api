@@ -1,20 +1,13 @@
 import {AxiosFetcher} from "@thorbens/fetcher/dist/AxiosFetcher";
 import {DefaultResponseFactory} from "@thorbens/fetcher/dist/DefaultResponseFactory";
-import {Fetcher} from "@thorbens/fetcher/dist/Fetcher";
-import {ResponseFactory} from "@thorbens/fetcher/dist/ResponseFactory";
-import {Container, Scope} from "typescript-ioc";
 import {JikanApiClient} from "./JikanApiClient";
 import {JikanApiAiringStatus} from "./Model/JikanApiAiringStatus";
 import {JikanApiType} from "./Model/JikanApiModel";
 
-describe("JikanApiClient", () => {
-    beforeAll(() => {
-        Container.bind(Fetcher).to(AxiosFetcher).scope(Scope.Singleton);
-        Container.bind(ResponseFactory).to(DefaultResponseFactory).scope(Scope.Singleton);
-    });
+const apiClient = new JikanApiClient(new AxiosFetcher(new DefaultResponseFactory()));
 
+describe("JikanApiClient", () => {
     it("should fetch the correct info", async () => {
-        const apiClient = new JikanApiClient();
         const response = await apiClient.getDetail(1);
 
         expect(!!response).toEqual(true);
@@ -37,7 +30,6 @@ describe("JikanApiClient", () => {
     });
 
     it("should perform a search request", async () => {
-        const apiClient = new JikanApiClient();
         const searchTerm = `attack on titan`;
         const response = await apiClient.search(searchTerm, JikanApiType.ANIME);
 
@@ -45,7 +37,6 @@ describe("JikanApiClient", () => {
     });
 
     it("should perform a recommendation request", async () => {
-        const apiClient = new JikanApiClient();
         const response = await apiClient.getRecommendations(1);
 
         expect(!!response).toEqual(true);
@@ -53,7 +44,6 @@ describe("JikanApiClient", () => {
     });
 
     it("should perform a reviews request", async () => {
-        const apiClient = new JikanApiClient();
         const response = await apiClient.getReviews(1);
 
         expect(!!response).toEqual(true);

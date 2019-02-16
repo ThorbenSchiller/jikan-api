@@ -27,7 +27,7 @@
     "typescript"
   ],
   "dependencies": {
-    "@thorbens/fetcher": "^2.0.0"
+    "@thorbens/fetcher": "^2.1.0"
   },
   "devDependencies": {
     "@types/jest": "^23.3.12",
