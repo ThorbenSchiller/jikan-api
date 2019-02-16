@@ -37,3 +37,13 @@ publish:
   script:
     - echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > .npmrc
     - npm publish --access public
+
+pages:
+  stage: deploy
+  script:
+    - npm run docs
+  artifacts:
+    paths:
+      - doc
+  only:
+    - tags
