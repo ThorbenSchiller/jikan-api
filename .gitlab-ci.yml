@@ -44,6 +44,6 @@ pages:
     - npm run docs
   artifacts:
     paths:
-      - doc
+      - public
   only:
     - tags
