@@ -27,7 +27,7 @@
     "typescript"
   ],
   "dependencies": {
-    "@thorbens/fetcher": "^2.1.0",
+    "@thorbens/fetcher": "^2.1.1",
     "typescript-ioc": "^1.2.4"
   },
   "devDependencies": {
