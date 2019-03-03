@@ -7,6 +7,11 @@ import {JikanApiType} from "./Model/JikanApiModel";
 const apiClient = new JikanApiClient(new AxiosFetcher(new HttpResponseFactory()));
 
 describe("JikanApiClient", () => {
+    beforeEach(() => {
+        // sleep between test to avoid rate limit
+        return new Promise(resolve => setTimeout(resolve, 1000));
+    });
+
     it("should fetch the correct info", async () => {
         const response = await apiClient.getDetail(1);
 
