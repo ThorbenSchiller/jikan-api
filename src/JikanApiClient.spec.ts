@@ -1,27 +1,20 @@
 import {AxiosFetcher} from "@thorbens/fetcher/dist/AxiosFetcher";
-import {DefaultResponseFactory} from "@thorbens/fetcher/dist/DefaultResponseFactory";
-import {Fetcher} from "@thorbens/fetcher/dist/Fetcher";
-import {ResponseFactory} from "@thorbens/fetcher/dist/ResponseFactory";
-import {Container} from "typescript-ioc";
+import {HttpResponseFactory} from "@thorbens/fetcher/dist/HttpResponseFactory";
 import {JikanApiClient} from "./JikanApiClient";
 import {JikanApiAiringStatus} from "./Model/JikanApiAiringStatus";
 import {JikanApiType} from "./Model/JikanApiModel";
 
-describe("JikanApiClient", () => {
-    beforeAll(() => {
-        Container.bind(ResponseFactory).to(DefaultResponseFactory);
-        Container.bind(Fetcher).to(AxiosFetcher);
-    });
+const apiClient = new JikanApiClient(new AxiosFetcher(new HttpResponseFactory()));
 
+describe("JikanApiClient", () => {
     it("should fetch the correct info", async () => {
-        const apiClient: JikanApiClient = Container.get(JikanApiClient);
         const response = await apiClient.getDetail(1);
 
         expect(!!response).toEqual(true);
 
         expect(response.mal_id).toEqual(1);
         expect(response.url).toEqual(`https://myanimelist.net/anime/1/Cowboy_Bebop`);
-        expect(response.image_url).toEqual(`https://myanimelist.cdn-dena.com/images/anime/4/19644.jpg`);
+        expect(response.image_url).toEqual(`https://cdn.myanimelist.net/images/anime/4/19644.jpg`);
         expect(response.trailer_url).toEqual(
             `https://www.youtube.com/embed/qig4KOK2R2g?enablejsapi=1&wmode=opaque&autoplay=1`,
         );
@@ -37,7 +30,6 @@ describe("JikanApiClient", () => {
     });
 
     it("should perform a search request", async () => {
-        const apiClient: JikanApiClient = Container.get(JikanApiClient);
         const searchTerm = `attack on titan`;
         const response = await apiClient.search(searchTerm, JikanApiType.ANIME);
 
@@ -45,7 +37,6 @@ describe("JikanApiClient", () => {
     });
 
     it("should perform a recommendation request", async () => {
-        const apiClient: JikanApiClient = Container.get(JikanApiClient);
         const response = await apiClient.getRecommendations(1);
 
         expect(!!response).toEqual(true);
@@ -53,7 +44,6 @@ describe("JikanApiClient", () => {
     });
 
     it("should perform a reviews request", async () => {
-        const apiClient: JikanApiClient = Container.get(JikanApiClient);
         const response = await apiClient.getReviews(1);
 
         expect(!!response).toEqual(true);

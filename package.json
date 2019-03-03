@@ -27,8 +27,8 @@
     "typescript"
   ],
   "dependencies": {
-    "@thorbens/fetcher": "^2.1.1",
-    "typescript-ioc": "^1.2.4"
+    "@thorbens/logger-model": "^1.0.0",
+    "@thorbens/fetcher": "^3.0.0-alpha.1"
   },
   "devDependencies": {
     "@types/jest": "^23.3.12",

@@ -1,5 +1,5 @@
 import {Fetcher} from "@thorbens/fetcher/dist/Fetcher";
-import {Inject} from "typescript-ioc";
+import {Logger} from "@thorbens/logger-model";
 import {JikanApiAnimeModel} from "./Model/JikanApiAnimeModel";
 import {JikanApiEpisodeModel, JikanApiEpisodesResponse} from "./Model/JikanApiEpisodeModel";
 import {isErrorResponse, JikanApiError, JikanApiType} from "./Model/JikanApiModel";
@@ -17,20 +17,27 @@ export class JikanApiClient {
     /**
      * The fetcher used to perform http requests.
      */
-    @Inject
-    private readonly fetcher!: Fetcher;
+    private readonly fetcher: Fetcher;
     /**
      * Endpoint url (without tailing slash).
      */
     private readonly endpointUrl: string;
+    /**
+     * The logger used.
+     */
+    private readonly logger: Logger;
 
     /**
      * Creates a new instance for this class.
      * No further methods are called in the constructor.
      *
+     * @param fetcher The fetcher used.
      * @param endpointUrl The endpoint url to use.
+     * @param logger
      */
-    constructor(endpointUrl?: string) {
+    constructor(fetcher: Fetcher, endpointUrl?: string, logger: Logger = console) {
+        this.fetcher = fetcher;
+        this.logger = logger;
         this.endpointUrl = endpointUrl || this.getDefaultUrl();
     }
 
@@ -43,8 +50,9 @@ export class JikanApiClient {
      * @returns The detail model for the requested id.
      * @see {@link https://jikan.docs.apiary.io/#reference/0/anime}
      */
-    public async getDetail(id: number): Promise<JikanApiAnimeModel> {
+    public getDetail(id: number): Promise<JikanApiAnimeModel> {
         const url = `${this.endpointUrl}/anime/${id}`;
+        this.logger.info(`performing request to ${url}`);
         // fetch response from api
         return this.performRequest<JikanApiAnimeModel>(url);
     }
@@ -60,8 +68,9 @@ export class JikanApiClient {
      * @returns The episodes model for the requested id.
      * @see {@link https://jikan.docs.apiary.io/#reference/0/anime}
      */
-    public async getEpisodes(id: number, page: number = 1): Promise<JikanApiEpisodesResponse> {
+    public getEpisodes(id: number, page: number = 1): Promise<JikanApiEpisodesResponse> {
         const url = `${this.endpointUrl}/anime/${id}/episodes/${page}`;
+        this.logger.info(`performing request to ${url}`);
         // fetch response from api
         return this.performRequest<JikanApiEpisodesResponse>(url);
     }
@@ -76,17 +85,23 @@ export class JikanApiClient {
      */
     public async getAllEpisodes(id: number): Promise<JikanApiEpisodeModel[]> {
         const episodes: JikanApiEpisodeModel[] = [];
-        const firstPage = await this.getEpisodes(id);
-        episodes.push(...firstPage.episodes);
-        if (firstPage.episodes_last_page > 1) {
-            // retrieve other pages as well
-            for (let page = 2; page < firstPage.episodes_last_page; page++) {
-                const nextPage = await this.getEpisodes(id, page);
-                episodes.push(...nextPage.episodes);
+        try {
+            const firstPage = await this.getEpisodes(id);
+            episodes.push(...firstPage.episodes);
+            if (firstPage.episodes_last_page > 1) {
+                // retrieve other pages as well
+                for (let page = 2; page < firstPage.episodes_last_page; page++) {
+                    const nextPage = await this.getEpisodes(id, page);
+                    episodes.push(...nextPage.episodes);
+                }
             }
-        }
 
-        return episodes;
+            return episodes;
+        } catch (e) {
+            this.logger.error(e);
+
+            return Promise.reject(e);
+        }
     }
 
     /**
@@ -100,8 +115,9 @@ export class JikanApiClient {
      * @returns The reviews model for the requested id.
      * @see {@link https://jikan.docs.apiary.io/#reference/0/anime}
      */
-    public async getReviews(id: number, page: number = 1): Promise<JikanApiReviewsResponse> {
+    public getReviews(id: number, page: number = 1): Promise<JikanApiReviewsResponse> {
         const url = `${this.endpointUrl}/anime/${id}/reviews/${page}`;
+        this.logger.info(`performing request to ${url}`);
         // fetch response from api
         return this.performRequest<JikanApiReviewsResponse>(url);
     }
@@ -113,8 +129,9 @@ export class JikanApiClient {
      * @returns The recommendations model for the requested id.
      * @see {@link https://jikan.docs.apiary.io/#reference/0/anime}
      */
-    public async getRecommendations(id: number): Promise<JikanApiRecommendationsResponse> {
+    public getRecommendations(id: number): Promise<JikanApiRecommendationsResponse> {
         const url = `${this.endpointUrl}/anime/${id}/recommendations`;
+        this.logger.info(`performing request to ${url}`);
         // fetch response from api
         return this.performRequest<JikanApiRecommendationsResponse>(url);
     }
@@ -129,8 +146,9 @@ export class JikanApiClient {
      * @returns The season model for the requested id.
      * @see {@link https://jikan.docs.apiary.io/#reference/0/season}
      */
-    public async getSeason(year: number, season: JikanSeasonType): Promise<JikanApiSeasonModel> {
+    public getSeason(year: number, season: JikanSeasonType): Promise<JikanApiSeasonModel> {
         const url = `${this.endpointUrl}/season/${year}/${season}`;
+        this.logger.info(`performing request to ${url}`);
         // fetch response from api
         return this.performRequest<JikanApiSeasonModel>(url);
     }
@@ -146,8 +164,11 @@ export class JikanApiClient {
      * @returns The search model for the given query.
      * @see {@link https://jikan.docs.apiary.io/#reference/0/search/search-request-example+schema?console=1}
      */
-    public async search(query: string, type: JikanApiType,
-                        options: JikanSearchOptions = {}): Promise<JikanApiSearchModel> {
+    public search(
+        query: string,
+        type: JikanApiType,
+        options: JikanSearchOptions = {},
+    ): Promise<JikanApiSearchModel> {
         // get keys from options
         const keys = Object.keys(options) as Array<keyof JikanSearchOptions>;
         // build query string
@@ -155,6 +176,7 @@ export class JikanApiClient {
             .join("&");
         // create final url
         const url = `${this.endpointUrl}/search/${type}?q=${query}&${queryString}`;
+        this.logger.info(`performing request to ${url}`);
         // fetch response from api
         return this.performRequest<JikanApiSearchModel>(url);
     }
@@ -178,12 +200,18 @@ export class JikanApiClient {
      * @typeparam T The expected response object.
      */
     private async performRequest<T extends object>(url: string): Promise<T> {
-        const response = await this.fetcher.fetch(url);
-        const responseObject = response.asJSON<JikanApiError | T>();
-        if (isErrorResponse(responseObject)) {
-            return Promise.reject(new Error(responseObject.error));
-        }
+        try {
+            const response = await this.fetcher.fetch(url);
+            const responseObject = response.asJSON<JikanApiError | T>();
+            if (isErrorResponse(responseObject)) {
+                return Promise.reject(new Error(responseObject.error));
+            }
 
-        return responseObject;
+            return responseObject;
+        } catch (e) {
+            this.logger.error(e);
+
+            return Promise.reject(e);
+        }
     }
 }
