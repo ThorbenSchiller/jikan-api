@@ -1,19 +1,19 @@
 module.exports = {
-    "roots": [
-        "<rootDir>/src"
-    ],
-    "transform": {
-        "^.+\\.tsx?$": "ts-jest"
-    },
-    "transformIgnorePatterns": [],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
     "moduleFileExtensions": [
         "ts",
         "tsx",
         "js",
         "jsx",
         "json",
-        "node"
+        "node",
     ],
-    "testEnvironment": "node"
+    "roots": [
+        "<rootDir>/src",
+    ],
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+    "transform": {
+        "^.+\\.tsx?$": "ts-jest",
+    },
+    "transformIgnorePatterns": [],
 };
