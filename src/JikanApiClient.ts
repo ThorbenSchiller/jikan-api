@@ -7,6 +7,7 @@ import {JikanApiRecommendationsResponse} from "./Model/JikanApiRecommendationMod
 import {JikanApiReviewsResponse} from "./Model/JikanApiReviewModel";
 import {JikanApiSearchModel, JikanSearchOptions} from "./Model/JikanApiSearchDetailModel";
 import {JikanApiSeasonModel, JikanSeasonType} from "./Model/JikanApiSeasonModel";
+import {StackedError} from "./StackedError";
 
 /**
  * Implementation of a Http Client for the Jikan MyAnimeList Api.
@@ -33,7 +34,7 @@ export class JikanApiClient {
      *
      * @param fetcher The fetcher used.
      * @param endpointUrl The endpoint url to use.
-     * @param logger
+     * @param logger The logger to use.
      */
     constructor(fetcher: Fetcher, endpointUrl?: string, logger: Logger = console) {
         this.fetcher = fetcher;
@@ -86,23 +87,28 @@ export class JikanApiClient {
      */
     public async getAllEpisodes(id: number): Promise<JikanApiEpisodeModel[]> {
         const episodes: JikanApiEpisodeModel[] = [];
+        let firstPage;
         try {
-            const firstPage = await this.getEpisodes(id);
-            episodes.push(...firstPage.episodes);
-            if (firstPage.episodes_last_page > 1) {
-                // retrieve other pages as well
-                for (let page = 2; page < firstPage.episodes_last_page; page++) {
-                    const nextPage = await this.getEpisodes(id, page);
-                    episodes.push(...nextPage.episodes);
-                }
-            }
-
-            return episodes;
+            firstPage = await this.getEpisodes(id);
         } catch (e) {
-            this.logger.error(e);
-
-            return Promise.reject(e);
+            throw new StackedError(`failed to fetch first page for episodes for id ${id}`, e);
         }
+        episodes.push(...firstPage.episodes);
+        if (firstPage.episodes_last_page > 1) {
+            this.logger.debug(`got ${firstPage.episodes_last_page} pages, start fetching of remaining pages`);
+            // retrieve other pages as well
+            for (let page = 2; page < firstPage.episodes_last_page; page++) {
+                let nextPage;
+                try {
+                    nextPage = await this.getEpisodes(id, page);
+                } catch (e) {
+                    throw new StackedError(`failed to fetch episodes for page ${page} for id "${id}"`, e);
+                }
+                episodes.push(...nextPage.episodes);
+            }
+        }
+
+        return episodes;
     }
 
     /**
@@ -201,18 +207,22 @@ export class JikanApiClient {
      * @typeparam T The expected response object.
      */
     private async performRequest<T extends object>(url: string): Promise<T> {
+        let response;
         try {
-            const response = await this.fetcher.fetch(url);
-            const responseObject = response.asJSON<JikanApiError | T>();
-            if (isErrorResponse(responseObject)) {
-                return Promise.reject(new Error(responseObject.error));
-            }
-
-            return responseObject;
+            response = await this.fetcher.fetch(url);
         } catch (e) {
-            this.logger.error(e);
-
-            return Promise.reject(e);
+            throw new StackedError(`could not fetch url "${url}"`, e);
         }
+        let responseObject;
+        try {
+            responseObject = response.asJSON<JikanApiError | T>();
+        } catch (e) {
+            throw new StackedError(`failed to parse json: ${response.body}`, e);
+        }
+        if (isErrorResponse(responseObject)) {
+            throw new Error(responseObject.error);
+        }
+
+        return responseObject;
     }
 }

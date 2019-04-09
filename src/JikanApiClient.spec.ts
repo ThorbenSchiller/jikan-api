@@ -4,7 +4,12 @@ import {JikanApiClient} from "./JikanApiClient";
 import {JikanApiAiringStatus} from "./Model/JikanApiAiringStatus";
 import {JikanApiType} from "./Model/JikanApiModel";
 
-const apiClient = new JikanApiClient(new AxiosFetcher(new HttpResponseFactory()));
+const apiClient = new JikanApiClient(
+    new AxiosFetcher(new HttpResponseFactory()),
+);
+
+// 5 seconds timeout for tests
+jest.setTimeout(5000);
 
 describe("JikanApiClient", () => {
     beforeEach(() => {

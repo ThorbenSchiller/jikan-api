@@ -1,4 +1,4 @@
-import {JikanApiAnimeModel} from "./JikanApiAnimeModel";
+import {JikanApiCommonAnimeModel} from "./JikanApiCommonAnimeModel";
 
 /**
  * Available seasons that can be requested.
@@ -20,5 +20,26 @@ export interface JikanApiSeasonModel {
     /**
      * Animes that belong to this season.
      */
-    anime: JikanApiAnimeModel[];
+    anime: JikanApiSeasonAnimeModel[];
+}
+
+export interface JikanApiSeasonAnimeModel extends JikanApiCommonAnimeModel {
+    /**
+     * The airing end date (ISO 8601, UTC).
+     *
+     * @example 1999-04-24T00:00:00+00:00
+     */
+    airing_start: string;
+    /**
+     * If this anime is rated 18.
+     */
+    r18: boolean;
+    /**
+     * If this anime is for kids/
+     */
+    kids: boolean;
+    /**
+     * If this anime is a leftover from the previous season.
+     */
+    continuing: boolean;
 }
