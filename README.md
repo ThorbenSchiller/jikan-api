@@ -1,6 +1,8 @@
 # Jikan Api
 This packages provides a client to fetch information from https://jikan.moe.
 
+TypeDoc is available on https://thorbens.gitlab.io/anime/jikan-api/.
+
 ## Usage
 The `JikanApiClient` requires a fetcher from the package [@thorben/fetcher](https://gitlab.com/thorbens/fetcher).
 To created a fetcher, a `ResponseFactory` is required.
