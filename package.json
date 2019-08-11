@@ -28,18 +28,18 @@
   ],
   "dependencies": {
     "@thorbens/logger-model": "^1.0.0",
-    "@thorbens/fetcher": "^3.0.0-alpha.1"
+    "@thorbens/fetcher": "^3.0.0-alpha.4"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.12",
-    "@types/node": "^10.12.12",
+    "@types/jest": "^24.0.17",
+    "@types/node": "^12.7.1",
     "@types/whatwg-mimetype": "^2.1.0",
-    "jest": "^23.6.0",
     "axios": "^0.18.0",
-    "rimraf": "^2.6.2",
-    "ts-jest": "^23.10.5",
-    "tslint": "^5.12.1",
-    "typedoc": "^0.14.1",
-    "typescript": "^3.3.3"
+    "jest": "^24.8.0",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.18.0",
+    "typedoc": "^0.15.0",
+    "typescript": "^3.5.3"
   }
 }
