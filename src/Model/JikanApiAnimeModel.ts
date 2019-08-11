@@ -87,7 +87,13 @@ export interface JikanApiAnimeModel extends JikanApiCommonAnimeModel {
      * Global myanimelist rank for this anime.
      */
     rank: number | null;
+    /**
+     * The popularity for this anime.
+     */
     popularity: number;
+    /**
+     * The number of favorites this anime has.
+     */
     favorites: number;
     /**
      * Background information for this anime (english).
@@ -112,8 +118,18 @@ export interface JikanApiAnimeModel extends JikanApiCommonAnimeModel {
      * Related animes described in a relation map.
      */
     related: JikanApiRelationMap;
+    /**
+     * A list of producers for this anime.
+     */
     producers: JikanApiRelatedModel[];
+    /**
+     * The studios which worked on this anime.
+     */
     studios: JikanApiRelatedModel[];
+    /**
+     * A list of licensors.
+     */
+    licensors: JikanApiRelatedModel[];
     /**
      * List of opening themes for this anime
      *
