@@ -11,7 +11,7 @@
     "lint": "tslint 'src/**/*.ts'",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "docs": "rimraf doc && typedoc --out ./public/ --mode file --excludePrivate --theme minimal"
+    "docs": "rimraf public && typedoc --out ./public/ --mode file --excludePrivate --theme minimal"
   },
   "author": "Thorben Schiller <schillerthorben@gmail.com>",
   "license": "ISC",
