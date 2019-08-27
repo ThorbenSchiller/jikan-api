@@ -4,20 +4,17 @@ This packages provides a client to fetch information from https://jikan.moe.
 TypeDoc is available on https://thorbens.gitlab.io/anime/jikan-api/.
 
 ## Usage
-The `JikanApiClient` requires a fetcher from the package [@thorben/fetcher](https://gitlab.com/thorbens/fetcher).
-To created a fetcher, a `ResponseFactory` is required.
-By default, the `HttpResponseFactory` can be used:
+The `JikanApiClient` requires a fetcher which implements the model from the
+package [@thorben/fetcher-model](https://gitlab.com/thorbens/fetcher-model).
+To use an existing implementation, you can use [@thorben/axios-fetcher](https://gitlab.com/thorbens/axios-fetcher):
 
 ```typescript
 import {
-    HttpResponseFactory,
-    Fetcher,
-    NodeFetchFetcher,
-    ResponseFactory
-} from "@thorbens/fetcher/dist";
+    AxiosFetcher,
+} from "@thorbens/axios-fetcher";
 import {JikanApiClient} from "@thorbens/jikan-api/dist";
 
-const fetcher = new AxiosFetcher(new HttpResponseFactory());
+const fetcher = new AxiosFetcher();
 const apiClient = new JikanApiClient(fetcher);
 ```
 

@@ -1,4 +1,4 @@
-import {Fetcher} from "@thorbens/fetcher/dist/Fetcher";
+import {Fetcher} from "@thorbens/fetcher-model";
 import {Logger} from "@thorbens/logger-model";
 import {JikanApiAnimeModel} from "./Model/JikanApiAnimeModel";
 import {JikanApiEpisodeModel, JikanApiEpisodesResponse} from "./Model/JikanApiEpisodeModel";
@@ -215,7 +215,7 @@ export class JikanApiClient {
         }
         let responseObject;
         try {
-            responseObject = response.asJSON<JikanApiError | T>();
+            responseObject = response.asJson<JikanApiError | T>();
         } catch (e) {
             throw new StackedError(`failed to parse json: ${response.body}`, e);
         }

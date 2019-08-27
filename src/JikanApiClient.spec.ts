@@ -1,12 +1,9 @@
-import {AxiosFetcher} from "@thorbens/fetcher/dist/AxiosFetcher";
-import {HttpResponseFactory} from "@thorbens/fetcher/dist/HttpResponseFactory";
+import {AxiosFetcher} from "@thorbens/axios-fetcher";
 import {JikanApiClient} from "./JikanApiClient";
 import {JikanApiAiringStatus} from "./Model/JikanApiAiringStatus";
 import {JikanApiType} from "./Model/JikanApiModel";
 
-const apiClient = new JikanApiClient(
-    new AxiosFetcher(new HttpResponseFactory()),
-);
+const apiClient = new JikanApiClient(new AxiosFetcher());
 
 // 5 seconds timeout for tests
 jest.setTimeout(5000);
