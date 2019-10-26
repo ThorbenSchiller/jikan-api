@@ -1,12 +1,19 @@
 import {Fetcher} from "@thorbens/fetcher-model";
 import {Logger} from "@thorbens/logger-model";
-import {JikanApiAnimeModel} from "./Model/JikanApiAnimeModel";
-import {JikanApiEpisodeModel, JikanApiEpisodesResponse} from "./Model/JikanApiEpisodeModel";
-import {isErrorResponse, JikanApiError, JikanApiType} from "./Model/JikanApiModel";
-import {JikanApiRecommendationsResponse} from "./Model/JikanApiRecommendationModel";
-import {JikanApiReviewsResponse} from "./Model/JikanApiReviewModel";
-import {JikanApiSearchModel, JikanSearchOptions} from "./Model/JikanApiSearchDetailModel";
-import {JikanApiSeasonModel, JikanSeasonType} from "./Model/JikanApiSeasonModel";
+import {
+    isErrorResponse,
+    JikanApiAnimeModel,
+    JikanApiEpisodeModel,
+    JikanApiEpisodesResponse,
+    JikanApiError,
+    JikanApiRecommendationsResponse,
+    JikanApiReviewsResponse,
+    JikanApiSearchModel,
+    JikanApiSeasonModel,
+    JikanApiType,
+    JikanSearchOptions,
+    JikanSeasonType,
+} from "./Model";
 import {StackedError} from "./StackedError";
 
 /**
