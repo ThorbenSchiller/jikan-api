@@ -46,8 +46,8 @@ export class JikanApiClient {
     constructor(fetcher: Fetcher, endpointUrl?: string, logger: Logger = console) {
         this.fetcher = fetcher;
         this.logger = logger;
-        this.logger.info(`using jikan endpoint url "${endpointUrl}"`);
         this.endpointUrl = endpointUrl || this.getDefaultUrl();
+        this.logger.info(`using jikan endpoint url "${endpointUrl}"`);
     }
 
     /**
