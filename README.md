@@ -1,7 +1,7 @@
 # Jikan Api
-This packages provides a client to fetch information from https://jikan.moe.
+This packages provides a javascript client to fetch information from https://jikan.moe.
 
-TypeDoc is available on https://thorbens.gitlab.io/anime/jikan-api/.
+TypeDoc is available at https://thorbens.gitlab.io/anime/jikan-api/.
 
 ## Usage
 The `JikanApiClient` requires a fetcher which implements the model from the
@@ -12,7 +12,7 @@ To use an existing implementation, you can use [@thorben/axios-fetcher](https://
 import {
     AxiosFetcher,
 } from "@thorbens/axios-fetcher";
-import {JikanApiClient} from "@thorbens/jikan-api/dist";
+import {JikanApiClient} from "@thorbens/jikan-api";
 
 const fetcher = new AxiosFetcher();
 const apiClient = new JikanApiClient(fetcher);
@@ -23,7 +23,7 @@ Example for fetching detail information of the anime https://myanimelist.net/ani
 
 ```typescript
 // fetches detail information for https://myanimelist.net/anime/1/Cowboy_Bebop
-const detail: JikanApiAnimeModel = await apiClient.getDetail(1);
+const detail = await apiClient.getDetail(1); // return a JikanApiAnimeModel
 ```
 
 ## Custom endpoint
