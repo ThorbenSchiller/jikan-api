@@ -1,6 +1,6 @@
 {
   "name": "@thorbens/jikan-api",
-  "version": "2.0.0-alpha.3",
+  "version": "2.0.0-alpha.4",
   "description": "Provides a javascript api client for the myanimelist jikan api (https://jikan.moe).",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
