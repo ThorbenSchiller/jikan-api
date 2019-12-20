@@ -25,9 +25,21 @@ export enum JikanDetailedType {
  */
 export interface JikanApiError {
     /**
-     * The error message.
+     * The error conclusion.
      */
     error: string;
+    /**
+     * The error message.
+     */
+    message: string;
+    /**
+     * The error type.
+     */
+    type: string;
+    /**
+     * The http status.
+     */
+    status: number;
 }
 
 /**

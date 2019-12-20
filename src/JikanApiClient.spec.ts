@@ -1,7 +1,6 @@
 import {AxiosFetcher} from "@thorbens/axios-fetcher";
 import {JikanApiClient} from "./JikanApiClient";
-import {JikanApiAiringStatus} from "./Model/JikanApiAiringStatus";
-import {JikanApiType} from "./Model/JikanApiModel";
+import {JikanApiAiringStatus, JikanApiType} from "./Model";
 
 const apiClient = new JikanApiClient(new AxiosFetcher());
 
@@ -55,5 +54,14 @@ describe("JikanApiClient", () => {
 
         expect(!!response).toEqual(true);
         expect(response.reviews.length > 0).toEqual(true);
+    });
+
+    it("should return a correct error response", async () => {
+        expect.assertions(1);
+        try {
+            await apiClient.getDetail(34796);
+        } catch (e) {
+            expect(e.status).toEqual(404);
+        }
     });
 });

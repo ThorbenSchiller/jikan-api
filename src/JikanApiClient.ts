@@ -1,4 +1,5 @@
 import {Fetcher} from "@thorbens/fetcher-model";
+import {Response} from "@thorbens/fetcher-model/dist";
 import {Logger} from "@thorbens/logger-model";
 import {
     isErrorResponse,
@@ -214,11 +215,14 @@ export class JikanApiClient {
      * @typeparam T The expected response object.
      */
     private async performRequest<T extends object>(url: string): Promise<T> {
-        let response;
+        let response: Response;
         try {
             response = await this.fetcher.fetch(url);
         } catch (e) {
-            throw new StackedError(`could not fetch url "${url}"`, e);
+            if (e instanceof Error) {
+                throw new StackedError(`could not fetch url "${url}"`, e);
+            }
+            response = e;
         }
         let responseObject;
         try {
@@ -227,7 +231,7 @@ export class JikanApiClient {
             throw new StackedError(`failed to parse json: ${response.body}`, e);
         }
         if (isErrorResponse(responseObject)) {
-            throw new Error(responseObject.error);
+            return Promise.reject(responseObject);
         }
 
         return responseObject;
