@@ -27,19 +27,19 @@
     "typescript"
   ],
   "dependencies": {
-    "@thorbens/logger-model": "^1.0.0",
-    "@thorbens/fetcher-model": "^1.0.0"
+    "@thorbens/logger-model": "^1.0.1",
+    "@thorbens/fetcher-model": "^1.0.1"
   },
   "devDependencies": {
-    "@thorbens/axios-fetcher": "^1.1.0",
-    "@types/jest": "^24.0.20",
-    "@types/node": "^12.11.7",
-    "jest": "^24.9.0",
-    "rimraf": "^3.0.0",
-    "ts-jest": "^24.1.0",
+    "@thorbens/axios-fetcher": "^1.1.1",
+    "@types/jest": "^25.1.2",
+    "@types/node": "^13.7.0",
+    "jest": "^25.1.0",
+    "rimraf": "^3.0.1",
+    "ts-jest": "^25.2.0",
     "ts-mockito": "^2.5.0",
-    "tslint": "^5.20.0",
-    "typedoc": "^0.15.0",
-    "typescript": "^3.6.4"
+    "tslint": "^6.0.0",
+    "typedoc": "^0.16.9",
+    "typescript": "^3.7.5"
   }
 }
