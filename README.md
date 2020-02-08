@@ -41,7 +41,7 @@ To use a custom logger, implement the interface of [@thorben/logger-model](https
 and pass it to the api client:
 
 ```typescript
-import {Logger} from "@thorbens/logger-model/dist";
+import {Logger} from "@thorbens/logger-model";
 
 class CustomLogger implements Logger {
     ...
