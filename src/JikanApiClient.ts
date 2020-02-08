@@ -184,7 +184,7 @@ export class JikanApiClient {
         options: JikanSearchOptions = {},
     ): Promise<JikanApiSearchModel> {
         // get keys from options
-        const keys = Object.keys(options) as Array<keyof JikanSearchOptions>;
+        const keys = Object.keys(options) as (keyof JikanSearchOptions)[];
         // build query string
         const queryString = keys.map(key => `${encodeURIComponent(key)}=${encodeURIComponent(`${options[key]}`)}`)
             .join("&");
