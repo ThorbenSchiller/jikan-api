@@ -1,5 +1,4 @@
-import {Fetcher} from "@thorbens/fetcher-model";
-import {Response} from "@thorbens/fetcher-model/dist";
+import {Fetcher, Response} from "@thorbens/fetcher-model";
 import {Logger} from "@thorbens/logger-model";
 import {
     isErrorResponse,
