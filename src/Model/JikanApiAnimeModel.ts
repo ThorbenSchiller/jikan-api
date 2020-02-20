@@ -82,7 +82,7 @@ export interface JikanApiAnimeModel extends JikanApiCommonAnimeModel {
     /**
      * Number of users who gave a rating.
      */
-    scored_by: number;
+    scored_by: number | null;
     /**
      * Global myanimelist rank for this anime.
      */
