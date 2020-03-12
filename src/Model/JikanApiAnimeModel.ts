@@ -2,6 +2,7 @@ import {JikanApiAiredModel} from "./JikanApiAiredModel";
 import {JikanApiAiringStatus} from "./JikanApiAiringStatus";
 import {JikanApiCommonAnimeModel} from "./JikanApiCommonAnimeModel";
 import {JikanApiRelatedModel} from "./JikanApiRelatedModel";
+import {JikanApiSourceModel} from "./JikanApiSourceModel";
 
 /**
  * Model for a relation map where the key describes the relation type and the value
@@ -54,7 +55,7 @@ export interface JikanApiAnimeModel extends JikanApiCommonAnimeModel {
     /**
      * The source of this anime.
      */
-    source: string;
+    source: JikanApiSourceModel;
     /**
      * The airing status for this anime.
      */

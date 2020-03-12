@@ -11,3 +11,4 @@ export * from "./JikanApiRelatedModel";
 export * from "./JikanApiReviewModel";
 export * from "./JikanApiSearchDetailModel";
 export * from "./JikanApiSeasonModel";
+export * from "./JikanApiSourceModel";
