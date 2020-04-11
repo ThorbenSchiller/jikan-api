@@ -20,7 +20,8 @@
     "declaration": true,
     "lib": [
       "es2015",
-      "es2015.promise"
+      "es2015.promise",
+      "dom"
     ]
   }
 }

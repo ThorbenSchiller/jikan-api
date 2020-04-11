@@ -1,4 +1,3 @@
-import {Fetcher, Response} from "@thorbens/fetcher-model";
 import {Logger} from "@thorbens/logger-model";
 import {
     isErrorResponse,
@@ -16,6 +15,23 @@ import {
 } from "./Model";
 import {StackedError} from "./StackedError";
 
+type FetchApi = WindowOrWorkerGlobalScope['fetch'];
+
+export interface JikanApiClientOptions {
+    /**
+     * The fetch api used to perform http requests.
+     */
+    fetchApi?: FetchApi;
+    /**
+     * Endpoint url (without tailing slash).
+     */
+    endpointUrl?: string;
+    /**
+     * The logger used.
+     */
+    logger?: Logger;
+}
+
 /**
  * Implementation of a Http Client for the Jikan MyAnimeList Api.
  *
@@ -25,7 +41,7 @@ export class JikanApiClient {
     /**
      * The fetcher used to perform http requests.
      */
-    private readonly fetcher: Fetcher;
+    private readonly fetchApi: FetchApi;
     /**
      * Endpoint url (without tailing slash).
      */
@@ -39,14 +55,14 @@ export class JikanApiClient {
      * Creates a new instance for this class.
      * No further methods are called in the constructor.
      *
-     * @param fetcher The fetcher used.
+     * @param fetch The fetcher used.
      * @param endpointUrl The endpoint url to use.
      * @param logger The logger to use.
      */
-    constructor(fetcher: Fetcher, endpointUrl?: string, logger: Logger = console) {
-        this.fetcher = fetcher;
+    constructor({fetchApi = fetch, endpointUrl = "https://api.jikan.moe/v3", logger = console}: JikanApiClientOptions) {
+        this.fetchApi = fetchApi;
         this.logger = logger;
-        this.endpointUrl = endpointUrl || this.getDefaultUrl();
+        this.endpointUrl = endpointUrl;
         this.logger.info(`using jikan endpoint url "${this.endpointUrl}"`);
     }
 
@@ -196,16 +212,6 @@ export class JikanApiClient {
     }
 
     /**
-     * Returns the default api url to use of no url is given in the constructor.
-     * Overwrite this function in an extended class to change the used default url.
-     *
-     * @returns The default api url to use of no url is given in the constructor.
-     */
-    protected getDefaultUrl(): string {
-        return `https://api.jikan.moe/v3`;
-    }
-
-    /**
      * Fetches the given api url and returns the type T.
      * If the response is an error, the promise is rejected.
      *
@@ -214,22 +220,14 @@ export class JikanApiClient {
      * @typeparam T The expected response object.
      */
     private async performRequest<T extends object>(url: string): Promise<T> {
-        let response: Response;
-        try {
-            response = await this.fetcher.fetch(url);
-        } catch (e) {
-            if (e instanceof Error) {
-                throw new StackedError(`could not fetch url "${url}"`, e);
-            }
-            response = e;
-        }
+        const response = await this.fetchApi(url);
         let responseObject;
         try {
-            responseObject = response.asJson<JikanApiError | T>();
+            responseObject = await response.json() as JikanApiError | T;
         } catch (e) {
             throw new StackedError(`failed to parse json: ${response.body}`, e);
         }
-        if (isErrorResponse(responseObject)) {
+        if (!response.ok || isErrorResponse(responseObject)) {
             return Promise.reject(responseObject);
         }
 
