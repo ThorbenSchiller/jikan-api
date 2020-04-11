@@ -55,11 +55,10 @@ export class JikanApiClient {
      * Creates a new instance for this class.
      * No further methods are called in the constructor.
      *
-     * @param fetch The fetcher used.
-     * @param endpointUrl The endpoint url to use.
-     * @param logger The logger to use.
+     * @param options The api options to use.
      */
-    constructor({fetchApi = fetch, endpointUrl = "https://api.jikan.moe/v3", logger = console}: JikanApiClientOptions) {
+    constructor(options: JikanApiClientOptions = {}) {
+        const {fetchApi = fetch, endpointUrl = "https://api.jikan.moe/v3", logger = console} = options;
         this.fetchApi = fetchApi;
         this.logger = logger;
         this.endpointUrl = endpointUrl;
