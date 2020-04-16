@@ -14,8 +14,13 @@ import {
     JikanSeasonType,
 } from "./Model";
 import {StackedError} from "./StackedError";
+import fetch, {RequestInfo, RequestInit, Response} from "node-fetch";
 
-type FetchApi = WindowOrWorkerGlobalScope['fetch'];
+type FetchApi = (
+    url: RequestInfo,
+    init?: RequestInit
+) => Promise<Response>;
+type FetchApiRequestInfo = RequestInit;
 
 export interface JikanApiClientOptions {
     /**
@@ -30,6 +35,10 @@ export interface JikanApiClientOptions {
      * The logger used.
      */
     logger?: Logger;
+    /**
+     * Additional fetch options to pass with each request.
+     */
+    fetchOptions?: FetchApiRequestInfo;
 }
 
 /**
@@ -50,6 +59,10 @@ export class JikanApiClient {
      * The logger used.
      */
     private readonly logger: Logger;
+    /**
+     * Additional fetch options to pass with each request.
+     */
+    private readonly fetchOptions: FetchApiRequestInfo;
 
     /**
      * Creates a new instance for this class.
@@ -58,10 +71,11 @@ export class JikanApiClient {
      * @param options The api options to use.
      */
     constructor(options: JikanApiClientOptions = {}) {
-        const {fetchApi = fetch, endpointUrl = "https://api.jikan.moe/v3", logger = console} = options;
+        const {fetchApi = fetch, endpointUrl = "https://api.jikan.moe/v3", fetchOptions = {}, logger = console} = options;
         this.fetchApi = fetchApi;
         this.logger = logger;
         this.endpointUrl = endpointUrl;
+        this.fetchOptions = fetchOptions;
         this.logger.info(`using jikan endpoint url "${this.endpointUrl}"`);
     }
 
@@ -219,7 +233,7 @@ export class JikanApiClient {
      * @typeparam T The expected response object.
      */
     private async performRequest<T extends object>(url: string): Promise<T> {
-        const response = await this.fetchApi(url);
+        const response = await this.fetchApi(url, this.fetchOptions);
         let responseObject;
         try {
             responseObject = await response.json() as JikanApiError | T;

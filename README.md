@@ -4,14 +4,13 @@ This package provides a javascript client to fetch information from https://jika
 TypeDoc is available at https://thorbens.gitlab.io/anime/jikan-api.
 
 ## Usage
-The api client relies on [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
-Ensure that fetch is globally defined or pass a compatible implementation to the constructor.
+The api client relies on [fetch](https://www.npmjs.com/package/node-fetch) and is intended for server side use.
+All options for the constructor are optional.
 
 ```typescript
 import {JikanApiClient} from "@thorbens/jikan-api";
-import fetchApi from "node-fetch"; // use on server side
 
-const apiClient = new JikanApiClient({fetchApi});
+const apiClient = new JikanApiClient();
 ```
 
 ## Example

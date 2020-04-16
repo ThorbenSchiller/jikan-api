@@ -10,7 +10,7 @@ const endpointUrl = "https://api.jikan.moe/v3";
 describe("JikanApiClient", () => {
     it("should fetch the correct info", async () => {
         const expectedUrl = `${endpointUrl}/anime/1`;
-        const fetchMock = jest.fn(async (url: string) => ({
+        const fetchMock = jest.fn(async (url: any) => ({
             json: () => detailResponse,
             status: 200,
             ok: true,
@@ -45,7 +45,7 @@ describe("JikanApiClient", () => {
     it("should perform a search request", async () => {
         const searchTerm = `attack on titan`;
         const expectedUrl = `${endpointUrl}/search/anime?q=${searchTerm}&`;
-        const fetchMock = jest.fn(async (url: string) => ({
+        const fetchMock = jest.fn(async (url: any) => ({
             json: () => searchResponse,
             status: 200,
             ok: true,
@@ -63,7 +63,7 @@ describe("JikanApiClient", () => {
 
     it("should perform a recommendation request", async () => {
         const expectedUrl = `${endpointUrl}/anime/1/recommendations`;
-        const fetchMock = jest.fn(async (url: string) => ({
+        const fetchMock = jest.fn(async (url: any) => ({
             json: () => recommendationsResponse,
             status: 200,
             ok: true,
@@ -82,7 +82,7 @@ describe("JikanApiClient", () => {
 
     it("should perform a reviews request", async () => {
         const expectedUrl = `${endpointUrl}/anime/1/reviews/1`;
-        const fetchMock = jest.fn(async (url: string) => ({
+        const fetchMock = jest.fn(async (url: any) => ({
             json: () => reviewsResponse,
             status: 200,
             ok: true,
@@ -107,7 +107,7 @@ describe("JikanApiClient", () => {
             status: 404,
             type: "BadResponseException",
         };
-        const fetchMock = jest.fn(async (url: string) => ({
+        const fetchMock = jest.fn(async (url: any) => ({
             json: () => badResponse,
             status: badResponse.status,
             ok: false,
