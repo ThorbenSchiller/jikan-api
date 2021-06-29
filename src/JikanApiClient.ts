@@ -110,7 +110,7 @@ export class JikanApiClient {
    */
   public getEpisodes(
     id: number,
-    page: number = 1
+    page = 1
   ): Promise<JikanApiEpisodesResponse> {
     const url = `${this.endpointUrl}/anime/${id}/episodes/${page}`;
     this.logger.info(`performing request to ${url}`);
@@ -173,7 +173,7 @@ export class JikanApiClient {
    */
   public getReviews(
     id: number,
-    page: number = 1
+    page = 1
   ): Promise<JikanApiReviewsResponse> {
     const url = `${this.endpointUrl}/anime/${id}/reviews/${page}`;
     this.logger.info(`performing request to ${url}`);
@@ -257,7 +257,7 @@ export class JikanApiClient {
    * @returns The typed response from the request.
    * @typeparam T The expected response object.
    */
-  private async performRequest<T extends object>(url: string): Promise<T> {
+  private async performRequest<T>(url: string): Promise<T> {
     const response = await this.fetchApi(url, this.fetchOptions);
     let responseObject;
     try {

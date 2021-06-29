@@ -47,8 +47,8 @@ export interface JikanApiError {
  *
  * @param response The response object to check.
  */
-export function isErrorResponse(response: object): response is JikanApiError {
-  return response && `error` in response;
+export function isErrorResponse(response: unknown): response is JikanApiError {
+  return typeof response === "object" && response != null && "error" in response;
 }
 
 /**

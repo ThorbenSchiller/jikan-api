@@ -11,12 +11,12 @@ describe("JikanApiClient", () => {
   it("should fetch the correct info", async () => {
     const expectedUrl = `${endpointUrl}/anime/1`;
     const fetchMock = jest.fn(
-      async (url: any) =>
+      async () =>
         ({
           json: () => detailResponse,
           status: 200,
           ok: true,
-        } as any)
+        } as never)
     );
     const apiClient = new JikanApiClient({
       fetchApi: fetchMock,
@@ -24,7 +24,8 @@ describe("JikanApiClient", () => {
     });
     const response = await apiClient.getDetail(1);
 
-    expect(fetchMock.mock.calls[0][0]).toBe(expectedUrl);
+    expect(fetchMock).toBeCalledTimes(1);
+    expect(fetchMock).toBeCalledWith(expectedUrl, {});
 
     expect(!!response).toEqual(true);
 
@@ -53,12 +54,12 @@ describe("JikanApiClient", () => {
     const searchTerm = `attack on titan`;
     const expectedUrl = `${endpointUrl}/search/anime?q=${searchTerm}&`;
     const fetchMock = jest.fn(
-      async (url: any) =>
+      async () =>
         ({
           json: () => searchResponse,
           status: 200,
           ok: true,
-        } as any)
+        } as never)
     );
     const apiClient = new JikanApiClient({
       fetchApi: fetchMock,
@@ -66,7 +67,8 @@ describe("JikanApiClient", () => {
     });
     const response = await apiClient.search(searchTerm, JikanApiType.ANIME);
 
-    expect(fetchMock.mock.calls[0][0]).toBe(expectedUrl);
+    expect(fetchMock).toBeCalledTimes(1);
+    expect(fetchMock).toBeCalledWith(expectedUrl, {});
 
     expect(!!response).toEqual(true);
   });
@@ -74,12 +76,12 @@ describe("JikanApiClient", () => {
   it("should perform a recommendation request", async () => {
     const expectedUrl = `${endpointUrl}/anime/1/recommendations`;
     const fetchMock = jest.fn(
-      async (url: any) =>
+      async () =>
         ({
           json: () => recommendationsResponse,
           status: 200,
           ok: true,
-        } as any)
+        } as never)
     );
     const apiClient = new JikanApiClient({
       fetchApi: fetchMock,
@@ -87,7 +89,8 @@ describe("JikanApiClient", () => {
     });
     const response = await apiClient.getRecommendations(1);
 
-    expect(fetchMock.mock.calls[0][0]).toBe(expectedUrl);
+    expect(fetchMock).toBeCalledTimes(1);
+    expect(fetchMock).toBeCalledWith(expectedUrl, {});
 
     expect(!!response).toEqual(true);
     expect(response.recommendations.length > 0).toEqual(true);
@@ -96,12 +99,12 @@ describe("JikanApiClient", () => {
   it("should perform a reviews request", async () => {
     const expectedUrl = `${endpointUrl}/anime/1/reviews/1`;
     const fetchMock = jest.fn(
-      async (url: any) =>
+      async () =>
         ({
           json: () => reviewsResponse,
           status: 200,
           ok: true,
-        } as any)
+        } as never)
     );
     const apiClient = new JikanApiClient({
       fetchApi: fetchMock,
@@ -109,7 +112,8 @@ describe("JikanApiClient", () => {
     });
     const response = await apiClient.getReviews(1);
 
-    expect(fetchMock.mock.calls[0][0]).toBe(expectedUrl);
+    expect(fetchMock).toBeCalledTimes(1);
+    expect(fetchMock).toBeCalledWith(expectedUrl, {});
 
     expect(!!response).toEqual(true);
     expect(response.reviews.length > 0).toEqual(true);
@@ -124,23 +128,24 @@ describe("JikanApiClient", () => {
       type: "BadResponseException",
     };
     const fetchMock = jest.fn(
-      async (url: any) =>
+      async () =>
         ({
           json: () => badResponse,
           status: badResponse.status,
           ok: false,
-        } as any)
+        } as never)
     );
     const apiClient = new JikanApiClient({
       fetchApi: fetchMock,
       endpointUrl,
     });
 
-    expect.assertions(2);
+    expect.assertions(3);
     try {
       await apiClient.getDetail(34796);
     } catch (e) {
-      expect(fetchMock.mock.calls[0][0]).toBe(expectedUrl);
+      expect(fetchMock).toBeCalledTimes(1);
+      expect(fetchMock).toBeCalledWith(expectedUrl, {});
       expect(e).toEqual(badResponse);
     }
   });
