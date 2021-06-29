@@ -17,7 +17,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/thorbens/anime/jikan-api.git"
+    "url": "https://github.com/ThorbenSchiller/jikan-api"
   },
   "keywords": [
     "anime",
