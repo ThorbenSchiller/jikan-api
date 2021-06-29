@@ -2,8 +2,9 @@
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts", "node_modules", "tests"],
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "ES2020",
+    "module": "CommonJS",
+    "lib": ["ES2020"],
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "strict": true,
@@ -12,6 +13,5 @@
     "emitDecoratorMetadata": true,
     "outDir": "./dist",
     "declaration": true,
-    "lib": ["es2015", "es2015.promise"]
   }
 }
