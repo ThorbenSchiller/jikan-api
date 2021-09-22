@@ -13,7 +13,7 @@ import {
   JikanSearchOptions,
   JikanSeasonType,
 } from "./Model";
-import { StackedError } from "./StackedError";
+import { createStackedError } from "./StackedError";
 import fetch, { RequestInfo, RequestInit, Response } from "node-fetch";
 
 type FetchApi = (url: RequestInfo, init?: RequestInit) => Promise<Response>;
@@ -108,10 +108,7 @@ export class JikanApiClient {
    * @returns The episodes model for the requested id.
    * @see {@link https://jikan.docs.apiary.io/#reference/0/anime}
    */
-  public getEpisodes(
-    id: number,
-    page = 1
-  ): Promise<JikanApiEpisodesResponse> {
+  public getEpisodes(id: number, page = 1): Promise<JikanApiEpisodesResponse> {
     const url = `${this.endpointUrl}/anime/${id}/episodes/${page}`;
     this.logger.info(`performing request to ${url}`);
     // fetch response from api
@@ -132,7 +129,7 @@ export class JikanApiClient {
     try {
       firstPage = await this.getEpisodes(id);
     } catch (e) {
-      throw new StackedError(
+      throw createStackedError(
         `failed to fetch first page for episodes for id ${id}`,
         e
       );
@@ -148,7 +145,7 @@ export class JikanApiClient {
         try {
           nextPage = await this.getEpisodes(id, page);
         } catch (e) {
-          throw new StackedError(
+          throw createStackedError(
             `failed to fetch episodes for page ${page} for id "${id}"`,
             e
           );
@@ -171,10 +168,7 @@ export class JikanApiClient {
    * @returns The reviews model for the requested id.
    * @see {@link https://jikan.docs.apiary.io/#reference/0/anime}
    */
-  public getReviews(
-    id: number,
-    page = 1
-  ): Promise<JikanApiReviewsResponse> {
+  public getReviews(id: number, page = 1): Promise<JikanApiReviewsResponse> {
     const url = `${this.endpointUrl}/anime/${id}/reviews/${page}`;
     this.logger.info(`performing request to ${url}`);
     // fetch response from api
@@ -263,7 +257,7 @@ export class JikanApiClient {
     try {
       responseObject = (await response.json()) as JikanApiError | T;
     } catch (e) {
-      throw new StackedError(`failed to parse json: ${response.body}`, e);
+      throw createStackedError(`failed to parse json: ${response.body}`, e);
     }
     if (!response.ok || isErrorResponse(responseObject)) {
       return Promise.reject(responseObject);
