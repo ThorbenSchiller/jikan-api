@@ -45,6 +45,16 @@ const apiClient = new JikanApiClient({endpointUrl});
 
 See https://github.com/jikan-me/jikan-rest for hosting your own endpoint.
 
+## Error Handling
+
+[`fetch` does not throw an error if the response is not `ok`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
+Therefore, the [ok field](https://developer.mozilla.org/en-US/docs/Web/API/Response/ok)
+is checked and the promise will be rejected accordingly.
+The rejection can contain the actual **response body** (as json object).
+
+The helper `isErrorResponse` can be used to check if the response is an actual api
+error (`JikanApiError`) and not a network error or else.
+
 ## Logging
 
 By default, logging will be performed on the `console`.
