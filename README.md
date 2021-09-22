@@ -24,23 +24,31 @@ Example for fetching detail information of the anime https://myanimelist.net/ani
 const detail = await apiClient.getDetail(1); // return a JikanApiAnimeModel
 ```
 
-## Custom endpoint
+## Options
 
-To change the jikan endpoint, pass the endpoint url as second parameters:
+The following options are available in the constructor.
 
+| Option | Description |
+| ------ | ----------- |
+| `fetchApi` | The `fetch` implementation to use. By default, `node-fetch` is used. |
+| `endpointUrl` | The jikan endpoint to use. By default, `https://api.jikan.moe/v3` is used. |
+| `logger` | The logger to use. By default, the `console` is used. |
+| `fetchOptions` | Additional fetch options to use for *each* request. Empty by default. |
+
+Example for a custom endpoint:
 ```typescript
 import {JikanApiClient} from "@thorbens/jikan-api";
 
 const endpointUrl = "https://exmaple.com/v3"; // no tailing slash
-const apiClient = new JikanApiClient({endpointUrl);
+const apiClient = new JikanApiClient({endpointUrl});
 ```
 
 See https://github.com/jikan-me/jikan-rest for hosting your own endpoint.
 
 ## Logging
 
-By default, logging will be performed on the console.
-To use a custom logger, implement the interface of [@thorben/logger-model](https://gitlab.com/thorbens/logger-model)
+By default, logging will be performed on the `console`.
+To use a custom logger, implement the interface from [@thorben/logger-model](https://gitlab.com/thorbens/logger-model)
 and pass it to the api client:
 
 ```typescript
@@ -49,5 +57,6 @@ import {Logger} from "@thorbens/logger-model";
 class CustomLogger implements Logger {
     ...
 }
-const apiClient = new JikanApiClient({logger: new CustomLogger()});
+const logger = new CustomLogger();
+const apiClient = new JikanApiClient({ logger });
 ```
